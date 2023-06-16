@@ -1,7 +1,10 @@
 import { control, Map, ControlPosition, setDomain, source, Shape, data, layer, AuthenticationType } from 'azure-maps-control'
 const StyleControl = control.StyleControl;
+const ZoomControl = control.ZoomControl;
+const TrafficControl = control.TrafficControl;
 const DataSource = source.DataSource;
 const BubbleLayer = layer.BubbleLayer;
+const ImageLayer = layer.ImageLayer;
 
 // imports resolved css inside az-map
 require('../node_modules/azure-maps-control/dist/atlas.css');
@@ -29,8 +32,9 @@ class MapComponent extends HTMLElement {
 
     this.map = new Map(inner, {
       authOptions,
+      showTileBoundaries: true,
       center: [-122.13949398, 47.64628823],
-      zoom: 19
+      zoom: 12
     })
 
     this.loadState()
@@ -38,12 +42,25 @@ class MapComponent extends HTMLElement {
     this.map.events.add('dragend', () => this.updateState())
     this.map.events.add('pitchend', () => this.updateState())
     this.map.events.add('zoomend', () => this.updateState())
-    this.map.events.add('ready', event => {})
+    this.map.events.add('sourceremoved', () => console.log('sourceremoved'))
+    this.map.events.add('sourceadded', () => console.log('sourceadded'))
+    this.map.events.add('ready', event => {
 
-    this.map.controls.add(
-      new StyleControl({ mapStyles: 'all' }), 
-      { position: ControlPosition.TopRight }
-    )
+      //Create an image layer and add it to the map.
+      this.map.layers.add(new ImageLayer({
+        url: 'https://azuremaps.blob.core.windows.net/demo/img/newark_nj_1922.jpg',
+        coordinates: [
+            [-74.22655, 40.773941], //Top Left Corner
+            [-74.12544, 40.773941], //Top Right Corner
+            [-74.12544, 40.712216], //Bottom Right Corner
+            [-74.22655, 40.712216]  //Bottom Left Corner
+        ]
+      }))
+    })
+    
+    this.map.controls.add(new ZoomControl(), { position: ControlPosition.TopRight })
+    this.map.controls.add(new StyleControl({ mapStyles: 'all', layout: 'list' }), { position: ControlPosition.TopRight })
+    this.map.controls.add(new TrafficControl({ flow: "absolute" }), { position: ControlPosition.TopRight })
   }
 
   loadState(){
