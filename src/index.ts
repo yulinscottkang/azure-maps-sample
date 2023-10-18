@@ -1,4 +1,4 @@
-import { control, Map, ControlPosition, setDomain, source, Shape, data, layer, AuthenticationType } from 'azure-maps-control'
+import atlas, { control, Map, ControlPosition, setDomain, source, Shape, data, layer, AuthenticationType } from 'azure-maps-control'
 const StyleControl = control.StyleControl;
 const ZoomControl = control.ZoomControl;
 const TrafficControl = control.TrafficControl;
@@ -9,8 +9,16 @@ const ImageLayer = layer.ImageLayer;
 // imports resolved css inside az-map
 require('../node_modules/azure-maps-control/dist/atlas.css');
 
+const p: atlas.IconOptions = {
+  anchor: 'center',
+}
+
+const b: atlas.BubbleLayerOptions = {
+  color: 'red',
+}
+
 class MapComponent extends HTMLElement {
-  map: Map
+  map: atlas.Map
 
   constructor(){
     super()

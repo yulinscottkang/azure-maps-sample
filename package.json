@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "watch": "webpack --watch",
-    "serve": "webpack serve"
+    "serve": "webpack serve",
+    "build": "webpack build",
+    "build:tsc": "tsc",
+    "build:types": "tsc --emitDeclarationOnly"
   },
   "author": "ambientlight",
   "license": "MIT",
-  "dependencies": {
-    "azure-maps-control": "^2.2.2"
-  },
   "devDependencies": {
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.3",
@@ -22,5 +22,8 @@
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1"
+  },
+  "dependencies": {
+    "azure-maps-control": "^3.0.0-129"
   }
 }

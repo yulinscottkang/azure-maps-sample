@@ -11,6 +11,8 @@
     "esModuleInterop": true,
     "importHelpers": true,
     "experimentalDecorators": true,
+    "declaration": true,
+    // "skipLibCheck": false,
     "lib": [
       "es2016",
       "dom",
