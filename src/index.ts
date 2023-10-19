@@ -1,4 +1,5 @@
 import atlas, { control, Map, ControlPosition, setDomain, source, Shape, data, layer, AuthenticationType } from 'azure-maps-control'
+import * as atlasdrawing from "azure-maps-drawing-tools";
 const StyleControl = control.StyleControl;
 const ZoomControl = control.ZoomControl;
 const TrafficControl = control.TrafficControl;
@@ -8,6 +9,7 @@ const ImageLayer = layer.ImageLayer;
 
 // imports resolved css inside az-map
 require('../node_modules/azure-maps-control/dist/atlas.css');
+require('../node_modules/azure-maps-drawing-tools/dist/atlas-drawing.min.css');
 
 const p: atlas.IconOptions = {
   anchor: 'center',
@@ -64,11 +66,23 @@ class MapComponent extends HTMLElement {
             [-74.22655, 40.712216]  //Bottom Left Corner
         ]
       }))
+
+      //Create an instance of the drawing manager and display the drawing toolbar.
+      const drawingManager = new atlasdrawing.drawing.DrawingManager(this.map, {
+        toolbar: new atlasdrawing.control.DrawingToolbar({
+            position: 'top-right',
+            style: 'dark'
+        })
+      });
+
+      this.map.events.add('drawingchanging', drawingManager, (shape) => {
+        console.log(shape)
+      });
     })
     
     this.map.controls.add(new ZoomControl(), { position: ControlPosition.TopRight })
     this.map.controls.add(new StyleControl({ mapStyles: 'all', layout: 'list' }), { position: ControlPosition.TopRight })
-    this.map.controls.add(new TrafficControl({ flow: "absolute" }), { position: ControlPosition.TopRight })
+    this.map.controls.add(new TrafficControl({ flow: "relative" }), { position: ControlPosition.TopRight })
   }
 
   loadState(){
