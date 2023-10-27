@@ -1,5 +1,6 @@
 import atlas, { control, Map, ControlPosition, setDomain, source, Shape, data, layer, AuthenticationType } from 'azure-maps-control'
 import * as atlasdrawing from "azure-maps-drawing-tools";
+import * as atlasIndoor from "azure-maps-indoor";
 const StyleControl = control.StyleControl;
 const ZoomControl = control.ZoomControl;
 const TrafficControl = control.TrafficControl;
@@ -9,6 +10,7 @@ const ImageLayer = layer.ImageLayer;
 
 // imports resolved css inside az-map
 require('../node_modules/azure-maps-control/dist/atlas.css');
+require('../node_modules/azure-maps-indoor/dist/atlas-indoor.css');
 require('../node_modules/azure-maps-drawing-tools/dist/atlas-drawing.min.css');
 
 const p: atlas.IconOptions = {
@@ -42,6 +44,10 @@ class MapComponent extends HTMLElement {
 
     this.map = new Map(inner, {
       authOptions,
+      mapConfiguration: "9020b218-cf8c-e5c6-f239-d0e176719a15",
+      // mapConfiguration: "ca7019a7-2823-5174-6979-03459b267089",
+      styleAPIVersion: "2023-03-01-preview",
+      domain: "us.atlas.microsoft.com",
       showTileBoundaries: true,
       center: [-122.13949398, 47.64628823],
       zoom: 12
@@ -77,6 +83,23 @@ class MapComponent extends HTMLElement {
 
       this.map.events.add('drawingchanging', drawingManager, (shape) => {
         console.log(shape)
+      });
+
+      // Create an indoor maps manager.
+      //@ts-ignore
+      const indoorManager = new atlasIndoor.indoor.IndoorManager(this.map);
+
+      // Add a level control to the indoor manager.
+      indoorManager.setOptions({
+        //@ts-ignore
+          levelControl: new atlasIndoor.control.LevelControl({ position: "top-left", levelLabel: "name" })
+      });
+
+      indoorManager.setOptions({
+          autofocus: true,
+          autofocusOptions: {
+              padding: { top: 50, bottom: 50, left: 50, right: 50 }
+          }
       });
     })
     

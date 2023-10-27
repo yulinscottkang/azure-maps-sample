@@ -24,7 +24,8 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
-    "azure-maps-control": "^3.0.1",
-    "azure-maps-drawing-tools": "^1.0.2-14"
+    "azure-maps-control": "^3.0.2",
+    "azure-maps-drawing-tools": "^1.0.2",
+    "azure-maps-indoor": "^0.2.3"
   }
 }
