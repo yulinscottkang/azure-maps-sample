@@ -1,6 +1,8 @@
 import atlas, { control, Map, ControlPosition, setDomain, source, Shape, data, layer, AuthenticationType } from 'azure-maps-control'
 import * as atlasdrawing from "azure-maps-drawing-tools";
 import * as atlasIndoor from "azure-maps-indoor";
+import * as spatial from "azure-maps-spatial-io";
+
 const StyleControl = control.StyleControl;
 const ZoomControl = control.ZoomControl;
 const TrafficControl = control.TrafficControl;
@@ -45,7 +47,6 @@ class MapComponent extends HTMLElement {
     this.map = new Map(inner, {
       authOptions,
       mapConfiguration: "9020b218-cf8c-e5c6-f239-d0e176719a15",
-      // mapConfiguration: "ca7019a7-2823-5174-6979-03459b267089",
       styleAPIVersion: "2023-03-01-preview",
       domain: "us.atlas.microsoft.com",
       showTileBoundaries: true,
@@ -100,6 +101,10 @@ class MapComponent extends HTMLElement {
           autofocusOptions: {
               padding: { top: 50, bottom: 50, left: 50, right: 50 }
           }
+      });
+
+      spatial.io.read('https://azuremaps.z13.web.core.windows.net/data/Gpx/Route66Attractions.xml').then(r => {
+          console.log(r);
       });
     })
     
